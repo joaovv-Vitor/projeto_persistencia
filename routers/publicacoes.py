@@ -18,12 +18,12 @@ def ler_csv():#função auxiliar p evitar fazer a conversao sempre
 
 @router.post('/publicacoes', status_code=status.HTTP_201_CREATED)
 def create_publicacao(publicacao: PublicacaoSchema):
-
-    nova_publi = pd.DataFrame([publicacao])
+    # Convertendo a publicação recebida para um DataFrame
+    nova_publi = pd.DataFrame([publicacao.dict()])
+    
     nova_publi.to_csv(sv_file, mode='a', index=False, header=False)
 
     return {"message": "Publicação criada com sucesso", "publicacao": publicacao}
-
 
 @router.get('/listar_publicacoes', status_code= status.HTTP_200_OK)
 def listar_publicacoes():
@@ -35,7 +35,7 @@ def listar_publicacoes():
 @router.get('/pegar_publicacao/{publicacao_id}', status_code=status.HTTP_200_OK )
 def get_publicacao(publicacao_id: int):
     df= ler_csv()
-    publi= df.loc[df['id_pub']==publicacao_id] #busca a linha/publi onde bate os ids. se n achar, fica vazia
+    publi= df[df['id_pub']==publicacao_id] #busca a linha/publi onde bate os ids. se n achar, fica vazia
     if publi.empty:
         raise HTTPException(status_code=404, detail= 'Publicação não encontrada')#autoexplicativo
     publi_dic= publi.to_dict(orient='records')
