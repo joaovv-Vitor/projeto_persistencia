@@ -1,13 +1,14 @@
 from fastapi import FastAPI
 from schemas import PublicacaoSchema
 from starlette import status
-import csv
+import pandas as pd
 
 app = FastAPI()
 
 @app.post('/publicacao/', status_code=status.HTTP_201_CREATED)
 def create_publicacao(publicacao: PublicacaoSchema):
-    with open('csv\publicacoes.csv', 'a') as publi_csv:
-        nova_publi = csv.writer(publi_csv)
-        nova_publi.writerow(publicacao)
 
+    nova_publi = pd.DataFrame([publicacao])
+    nova_publi.to_csv('csv/publicacoes.csv', mode='a', index=False, header=False)
+    
+    return {"message": "Publicação criada com sucesso", "publicacao": publicacao}
