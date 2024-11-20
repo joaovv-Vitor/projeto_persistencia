@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, FilePath
 from datetime import datetime
 
 class PublicacaoSchema(BaseModel):
@@ -7,3 +7,4 @@ class PublicacaoSchema(BaseModel):
     legenda: str
     curtidas: int
     data_criacao: datetime
+    caminho_imagem: str 
