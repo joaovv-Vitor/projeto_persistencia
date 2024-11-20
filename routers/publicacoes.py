@@ -18,17 +18,10 @@ def ler_csv():#função auxiliar p evitar fazer a conversao sempre
 
 @router.post('/nova_publicacao', status_code=status.HTTP_201_CREATED)
 def create_publicacao(publicacao: PublicacaoSchema):
-<<<<<<< HEAD
     
     df = ler_csv()#pegar a ultma version do csv
 
     data_criacao_formatada = publicacao.data_criacao.strftime('%d/%m/%Y %H:%M:%S')#formata a data no padrao br
-=======
-    # Convertendo a publicação recebida para um DataFrame
-    nova_publi = pd.DataFrame([publicacao.dict()])
-    
-    nova_publi.to_csv(sv_file, mode='a', index=False, header=False)
->>>>>>> aff22d2918cb49ab26fa6b86ec2ec97f8692f619
 
     nova_publi = {
         "id_pub": publicacao.id_pub,

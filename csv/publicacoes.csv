@@ -1,5 +1,4 @@
 id_pub,id_autor,legenda,curtidas,data_criacao,caminho_imagem
-<<<<<<< HEAD
 26,22,momentos inesquecíveis na ufc,17,2024-11-20T20:28:05.327198,imagens/foto_26.png
 11,67,Café da manhã simples de pob,426,2024-11-20T20:28:05.327215,imagens/foto_14.png
 82,1,Foto de viagem,359,2024-11-20T20:28:05.327227,imagens/foto_47.png
@@ -15,20 +14,3 @@ id_pub,id_autor,legenda,curtidas,data_criacao,caminho_imagem
 12,0,string,0,2024-11-20 22:03:02.844000+00:00,string
 7,0,so teste,0,2024-11-20 22:11:33.233000+00:00,string
 1,0,teste data,0,20/11/2024 22:14:39,string
-=======
-26,22,"momentos inesquecíveis na ufc",17,"2024-11-20T20:28:05.327198","imagens/foto_26.png"
-11,67,"Café da manhã simples de pob",426,"2024-11-20T20:28:05.327215","imagens/foto_14.png"
-82,1,"Foto de viagem",359,"2024-11-20T20:28:05.327227","imagens/foto_47.png"
-74,11,"Café da manhã simples",462,"2024-11-20T20:28:05.327234","imagens/foto_23.png"
-84,99,"Projeto finalizadoo",232,"2024-11-20T20:28:05.327242","imagens/foto_18.png"
-53,55,"Relaxando na praia",49,"2024-11-20T20:28:05.327249","imagens/foto_28.png"
-0,97,"Visita ao parquin",323,"2024-11-20T20:28:05.327256","imagens/foto_50.png"
-67,81,"Reunião de família",254,"2024-11-20T20:28:05.327265","imagens/foto_37.png"
-98,8,"noite de jogos witsch",277,"2024-11-20T20:28:05.327273","imagens/foto_15.png"
-96,28,"Dia de sol lindo",221,"2024-11-20T20:28:05.327279","imagens/foto_13.png"
-19,20,"Relaxando na praia",282,"2024-11-20T20:28:05.327286","imagens/foto_49.png"
-89,69,"Visita ao parque",136,"2024-11-20T20:28:05.327293","imagens/foto_36.png"
-12,133,teste2,12222,2024-11-20 21:03:14.477000+00:00,string
-12,133,teste2,12222,2024-11-20 21:03:14.477000+00:00,string
-123123,123123,asdasdasd,22,2024-11-20 21:05:15.419000+00:00,string
->>>>>>> aff22d2918cb49ab26fa6b86ec2ec97f8692f619
