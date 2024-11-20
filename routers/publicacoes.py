@@ -69,3 +69,25 @@ def deletar_publicacao(publicacao_id: int):
     df.to_csv(sv_file, index=False)
 
     return {"mensagem":f"Publicação {publicacao_id} deletada com sucesso<3"}
+
+
+@router.put('/atualizar_publicacao/{publicacao_id}', status_code=status.HTTP_200_OK)
+def atualizar_publicacao(publicacao_id: int, publicacao: PublicacaoSchema):
+    df= ler_csv()
+
+    if publicacao_id not in df['id_pub'].values:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Publicação não encontrada')
+    
+    indice_publi= df[df['id_pub']== publicacao_id].index[0]
+
+    df.at[indice_publi, 'id_pub'] = publicacao.id_pub
+    df.at[indice_publi, 'id_autor'] = publicacao.id_autor
+    df.at[indice_publi, 'legenda'] = publicacao.legenda
+    df.at[indice_publi, 'curtidas'] = publicacao.curtidas
+    df.at[indice_publi, 'data_criacao'] = publicacao.data_criacao.strftime('%d/%m/%Y %H:%M:%S')
+    df.at[indice_publi, 'caminho_imagem'] = publicacao.caminho_imagem
+
+    df.to_csv(sv_file, index=False)
+
+    return{"mensagem":f"Publicação {publicacao_id} atualizada!!", "publicacao":publicacao}
+    
