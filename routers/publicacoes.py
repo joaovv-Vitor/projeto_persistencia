@@ -18,7 +18,7 @@ def create_publicacao(publicacao: PublicacaoSchema):
 
     return {"message": "Publicação criada com sucesso", "publicacao": publicacao}
 
-# @router.get('/listar_publicacoes', status_code= status.HTTP_200_OK)
+@router.get('/listar_publicacoes', status_code= status.HTTP_200_OK)
 def listar_publicacoes():
     if os.path.exists(sv_file) and os.path.getsize(sv_file)>0:#checagem p ver se o arquivo existe e se nao está vazio
         df= pd.read_csv(sv_file)#p ler o csv
