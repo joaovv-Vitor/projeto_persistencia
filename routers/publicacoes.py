@@ -20,6 +20,9 @@ def ler_csv():#função auxiliar p evitar fazer a conversao sempre
 def create_publicacao(publicacao: PublicacaoSchema):
     
     df = ler_csv()#pegar a ultma version do csv
+    
+    if publicacao.id_pub in df['id_pub'].values:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Publicação já existe')
 
     data_criacao_formatada = publicacao.data_criacao.strftime('%d/%m/%Y %H:%M:%S')#formata a data no padrao br
 
@@ -36,6 +39,7 @@ def create_publicacao(publicacao: PublicacaoSchema):
     df.to_csv(sv_file, index=False)
 
     return {"mensagem": "Publicação criada com sucesso(:", "publicacao": nova_publi}
+
 
 @router.get('/listar_publicacoes', status_code= status.HTTP_200_OK)
 def listar_publicacoes():
