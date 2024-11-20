@@ -10,6 +10,12 @@ router = APIRouter(prefix='/publicacoes', tags=['publicaoes'])
 
 sv_file = os.path.join("csv", "publicacoes.csv")
 
+def ler_csv():#função auxiliar p evitar fazer a conversao sempre
+    if os.path.exists(sv_file) and os.path.getsize(sv_file) > 0:
+        return pd.read_csv(sv_file)
+    raise FileNotFoundError(f"O arquivo não existe ou está vazio")
+
+
 @router.post('/publicacoes', status_code=status.HTTP_201_CREATED)
 def create_publicacao(publicacao: PublicacaoSchema):
 
@@ -18,10 +24,11 @@ def create_publicacao(publicacao: PublicacaoSchema):
 
     return {"message": "Publicação criada com sucesso", "publicacao": publicacao}
 
+
 @router.get('/listar_publicacoes', status_code= status.HTTP_200_OK)
 def listar_publicacoes():
-    if os.path.exists(sv_file) and os.path.getsize(sv_file)>0:#checagem p ver se o arquivo existe e se nao está vazio
-        df= pd.read_csv(sv_file)#p ler o csv
-        publicacoes_dic= df.to_dict(orient='records')#converte p dic fazendo associaçao de valor/coluna
-        return{"publicações":publicacoes_dic}#retorna o json
-    raise FileNotFoundError(f"O arquivo não existe ou está vazio.")
+    df= ler_csv()
+    publicacoes_dic= df.to_dict(orient='records')#converte p dic fazendo associaçao de valor/coluna
+    return{"publicações":publicacoes_dic}#retorna o json
+
+
