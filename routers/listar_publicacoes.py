@@ -16,4 +16,4 @@ def listar_publicacoes():
     publicacoesdic= df.to_dict(orient='records')#agora pega o df e converte em dic
     #o records é p associar o valor da coluna com o nome, tipo id=1
 
-    return {"publicacoes": publicacoesdic}
+    return {"publicações": publicacoesdic}
