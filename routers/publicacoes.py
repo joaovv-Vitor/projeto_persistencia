@@ -90,4 +90,11 @@ def atualizar_publicacao(publicacao_id: int, publicacao: PublicacaoSchema):
     df.to_csv(sv_file, index=False)
 
     return{"mensagem":f"Publicação {publicacao_id} atualizada!!", "publicacao":publicacao}
+
+
+@router.get('/quantidade_de_publicacoes', status_code=status.HTTP_200_OK)
+def quantidade_publicacoes():
+    df= ler_csv()
+    quantidade= len(df)
+    return {"mensagem":"Quantidade de publicações", "quantidade": quantidade}
     
