@@ -32,11 +32,11 @@ def listar_publicacoes():
     return{"publicações":publicacoes_dic}#retorna o json
 
 
-@router.get('/pegar_publicacao{publicacao_id}', status_code=status.HTTP_200_OK )
+@router.get('/pegar_publicacao/{publicacao_id}', status_code=status.HTTP_200_OK )
 def get_publicacao(publicacao_id: int):
     df= ler_csv()
-    publi= df.loc[df['id_pub']== publicacao_id]#busca a linha/publi onde bate os ids. se n achar, fica vazia
+    publi= df.loc[df['id_pub']==publicacao_id] #busca a linha/publi onde bate os ids. se n achar, fica vazia
     if publi.empty:
-        raise HTTPException(status_code=404, detail= 'Publicação não encontrada')
+        raise HTTPException(status_code=404, detail= 'Publicação não encontrada')#autoexplicativo
     publi_dic= publi.to_dict(orient='records')
-    return {"publicação":publi_dic[0]}
+    return {"publicação":publi_dic}
