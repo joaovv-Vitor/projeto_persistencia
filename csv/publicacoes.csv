@@ -4,3 +4,5 @@ id_pub,id_autor,legenda,curtidas,data_criacao,caminho_imagem
 "('id_pub', 1000)","('id_autor', 12)","('legenda', 'mouse com fio')","('curtidas', 14)","('data_criacao', datetime.datetime(2024, 11, 20, 1, 22, 11, 774000, tzinfo=TzInfo(UTC)))","('caminho_imagem', 'teu\\pai\\corno.png')"
 "('id_pub', 233)","('id_autor', 1231)","('legenda', 'testamdp esse cacete')","('curtidas', 12)","('data_criacao', datetime.datetime(2024, 11, 20, 11, 14, 19, 521000, tzinfo=TzInfo(UTC)))","('caminho_imagem', 'string')"
 "('id_pub', 233)","('id_autor', 1231)","('legenda', 'testamdp esse cacete')","('curtidas', 12)","('data_criacao', datetime.datetime(2024, 11, 20, 11, 14, 19, 521000, tzinfo=TzInfo(UTC)))","('caminho_imagem', 'string')"
+"('id_pub', 234234)","('id_autor', 2134234)","('legenda', 'testeHash')","('curtidas', 3)","('data_criacao', datetime.datetime(2024, 11, 20, 11, 43, 23, 347000, tzinfo=TzInfo(UTC)))","('caminho_imagem', 'string')"
+"('id_pub', 234234)","('id_autor', 2134234)","('legenda', 'testeHash')","('curtidas', 3)","('data_criacao', datetime.datetime(2024, 11, 20, 11, 43, 23, 347000, tzinfo=TzInfo(UTC)))","('caminho_imagem', 'string')"
