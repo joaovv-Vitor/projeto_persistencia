@@ -1,14 +1,12 @@
 from fastapi import FastAPI
-from schemas import PublicacaoSchema
-from starlette import status
-import pandas as pd
+from http import HTTPStatus
+from routers.publicacoes import router as publicacoes_router
 
 app = FastAPI()
+app.include_router(publicacoes_router)
 
-@app.post('/publicacao/', status_code=status.HTTP_201_CREATED)
-def create_publicacao(publicacao: PublicacaoSchema):
+@app.get('/', status_code=HTTPStatus.OK)
+def read_root():
+    return{'message': 'olar mundo!!'}
 
-    nova_publi = pd.DataFrame([publicacao])
-    nova_publi.to_csv('csv/publicacoes.csv', mode='a', index=False, header=False)
-    
-    return {"message": "Publicação criada com sucesso", "publicacao": publicacao}
+
