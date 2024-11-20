@@ -5,7 +5,7 @@ import csv
 
 app = FastAPI()
 
-@app.post('/users/', status_code=status.HTTP_201_CREATED)
+@app.post('/publicacao/', status_code=status.HTTP_201_CREATED)
 def create_publicacao(publicacao: PublicacaoSchema):
     with open('csv\publicacoes.csv', 'a') as publi_csv:
         nova_publi = csv.writer(publi_csv)
