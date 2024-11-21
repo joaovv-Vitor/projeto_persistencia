@@ -24,9 +24,9 @@ def create_publicacao(publicacao: PublicacaoSchema):
     df = ler_csv()  # pegar a ultma version do csv
 
     if publicacao.id_pub in df['id_pub'].values:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Publicação já existe')
+        raise HTTPException(status_code=400, detail='Publicação já existe')
     if publicacao.id_pub < 0:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='ID inválido')
+        raise HTTPException(status_code=400, detail='ID inválido')
 
     nova_publi = {
         "id_pub": publicacao.id_pub,
@@ -41,31 +41,53 @@ def create_publicacao(publicacao: PublicacaoSchema):
         nova = csv.DictWriter(file, fieldnames=nova_publi.keys())
         nova.writerow(nova_publi)
 
-    return {"mensagem": "Publicação criada com sucesso(:", "publicacao": nova_publi}
+    return {"mensagem": "Publicação criada!", "publicacao": nova_publi}
 
 
 @router.get('/listar_publicacoes', status_code=status.HTTP_200_OK)
 def listar_publicacoes():
     df = ler_csv()
-    publicacoes_dic = df.to_dict(orient='records')  # converte p dic fazendo associaçao de valor/coluna
-    return {"publicações": publicacoes_dic}  # retorna o dict
+    publicacoes_dic = df.to_dict(orient='records')
+    return {"publicações": publicacoes_dic}
 
 
-@router.get('/pegar_publicacao/{publicacao_id}', status_code=status.HTTP_200_OK)
+@router.get('/pegar_publicacao/{publicacao_id}', status_code=200)
 def get_publicacao(publicacao_id: int):
     df = ler_csv()
-    publi = df[df['id_pub'] == publicacao_id]  # busca a linha/publi onde bate os ids. se n achar, fica vazia
+    publi = df[df['id_pub'] == publicacao_id]  # busca a linha/publi
     if publi.empty:
-        raise HTTPException(status_code=404, detail='Publicação não encontrada')  # autoexplicativo
+        raise HTTPException(status_code=404, detail='Not found')
     publi_dic = publi.to_dict(orient='records')
     return {"publicação": publi_dic}
 
 
-@router.delete('/deletar_publicacao/{publicacao_id}', status_code=status.HTTP_200_OK)
+@router.put('/atualizar_publicacao/{publicacao_id}', status_code=200)
+def atualizar_publicacao(publicacao_id: int, publicacao: PublicacaoSchema):
+    df = ler_csv()
+
+    if publicacao_id not in df['id_pub'].values:
+        raise HTTPException(status_code=404, detail='Not found')
+
+    indice_publi = df[df['id_pub'] == publicacao_id].index[0]
+    dataHr_padrao_Br = publicacao.data_criacao.strftime('%d/%m/%Y %H:%M:%S')
+
+    df.at[indice_publi, 'id_pub'] = publicacao.id_pub
+    df.at[indice_publi, 'id_autor'] = publicacao.id_autor
+    df.at[indice_publi, 'legenda'] = publicacao.legenda
+    df.at[indice_publi, 'curtidas'] = publicacao.curtidas
+    df.at[indice_publi, 'data_criacao'] = dataHr_padrao_Br
+    df.at[indice_publi, 'caminho_imagem'] = publicacao.caminho_imagem
+
+    df.to_csv(sv_file, index=False)
+
+    return {"mensagem": "Publicação atualizada!", "publicacao": publicacao}
+
+
+@router.delete('/deletar_publicacao/{publicacao_id}', status_code=200)
 def deletar_publicacao(publicacao_id: int):
     df = ler_csv()
     if publicacao_id not in df['id_pub'].values:
-        raise HTTPException(status_code=404, detail='Publicação não encontrada')
+        raise HTTPException(status_code=404, detail='Not found')
 
     df = df[df['id_pub'] != publicacao_id]
 
@@ -74,29 +96,8 @@ def deletar_publicacao(publicacao_id: int):
     return {"mensagem": f"Publicação {publicacao_id} deletada com sucesso<3"}
 
 
-@router.put('/atualizar_publicacao/{publicacao_id}', status_code=status.HTTP_200_OK)
-def atualizar_publicacao(publicacao_id: int, publicacao: PublicacaoSchema):
-    df = ler_csv()
-
-    if publicacao_id not in df['id_pub'].values:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Publicação não encontrada')
-
-    indice_publi = df[df['id_pub'] == publicacao_id].index[0]  # procura indece/linha certa p atualizar
-
-    df.at[indice_publi, 'id_pub'] = publicacao.id_pub
-    df.at[indice_publi, 'id_autor'] = publicacao.id_autor
-    df.at[indice_publi, 'legenda'] = publicacao.legenda
-    df.at[indice_publi, 'curtidas'] = publicacao.curtidas
-    df.at[indice_publi, 'data_criacao'] = publicacao.data_criacao.strftime('%d/%m/%Y %H:%M:%S')
-    df.at[indice_publi, 'caminho_imagem'] = publicacao.caminho_imagem
-
-    df.to_csv(sv_file, index=False)
-
-    return {"mensagem": f"Publicação {publicacao_id} atualizada!!", "publicacao": publicacao}
-
-
 @router.get('/quantidade_de_publicacoes', status_code=status.HTTP_200_OK)
 def quantidade_publicacoes():
     df = ler_csv()
     quantidade = len(df)
-    return {"mensagem": "Quantidade de publicações", "quantidade": quantidade}
+    return {"quantidade": quantidade}
