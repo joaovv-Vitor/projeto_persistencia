@@ -2,6 +2,7 @@ import pandas as pd
 from fastapi import APIRouter, HTTPException
 from starlette import status
 import os
+import csv
 
 
 from schemas import PublicacaoSchema
@@ -24,19 +25,19 @@ def create_publicacao(publicacao: PublicacaoSchema):
     if publicacao.id_pub in df['id_pub'].values:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Publicação já existe')
 
-    data_criacao_formatada = publicacao.data_criacao.strftime('%d/%m/%Y %H:%M:%S')#formata a data no padrao br
-
     nova_publi = {
         "id_pub": publicacao.id_pub,
         "id_autor": publicacao.id_autor,
         "legenda": publicacao.legenda,
         "curtidas": publicacao.curtidas,
-        "data_criacao": data_criacao_formatada,
+        "data_criacao": publicacao.data_criacao.strftime('%d/%m/%Y %H:%M:%S'),
         "caminho_imagem": publicacao.caminho_imagem
     }#cria um novo dic com as informaçoes passadas no parametro
 
-    df = pd.concat([df, pd.DataFrame([nova_publi])], ignore_index=True)
-    df.to_csv(sv_file, index=False)
+
+    with open(sv_file, mode="a", newline='', encoding="utf-8") as file:
+        nova= csv.DictWriter(file, fieldnames=nova_publi.keys())
+        nova.writerow(nova_publi)
 
     return {"mensagem": "Publicação criada com sucesso(:", "publicacao": nova_publi}
 
@@ -45,7 +46,7 @@ def create_publicacao(publicacao: PublicacaoSchema):
 def listar_publicacoes():
     df= ler_csv()
     publicacoes_dic= df.to_dict(orient='records')#converte p dic fazendo associaçao de valor/coluna
-    return{"publicações":publicacoes_dic}#retorna o json
+    return{"publicações":publicacoes_dic}#retorna o dict
 
 
 @router.get('/pegar_publicacao/{publicacao_id}', status_code=status.HTTP_200_OK )
@@ -78,7 +79,7 @@ def atualizar_publicacao(publicacao_id: int, publicacao: PublicacaoSchema):
     if publicacao_id not in df['id_pub'].values:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Publicação não encontrada')
     
-    indice_publi= df[df['id_pub']== publicacao_id].index[0]
+    indice_publi= df[df['id_pub']== publicacao_id].index[0]#procura indece/linha certa p atualizar
 
     df.at[indice_publi, 'id_pub'] = publicacao.id_pub
     df.at[indice_publi, 'id_autor'] = publicacao.id_autor
