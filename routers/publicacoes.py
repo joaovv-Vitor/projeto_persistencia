@@ -20,10 +20,13 @@ def ler_csv():#função auxiliar p evitar fazer a conversao sempre
 @router.post('/nova_publicacao', status_code=status.HTTP_201_CREATED)
 def create_publicacao(publicacao: PublicacaoSchema):
     
+
     df = ler_csv()#pegar a ultma version do csv
     
     if publicacao.id_pub in df['id_pub'].values:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='Publicação já existe')
+    if publicacao.id_pub <= 0:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='ID inválido')
 
     nova_publi = {
         "id_pub": publicacao.id_pub,
