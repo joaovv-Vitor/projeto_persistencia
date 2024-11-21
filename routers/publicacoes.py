@@ -61,6 +61,13 @@ def get_publicacao(publicacao_id: int):
     return {"publicação": publi_dic}
 
 
+@router.get('/quantidade_de_publicacoes', status_code=status.HTTP_200_OK)
+def quantidade_publicacoes():
+    df = ler_csv()
+    quantidade = len(df)
+    return {"quantidade de publicações": quantidade}
+
+
 @router.put('/atualizar_publicacao/{publicacao_id}', status_code=200)
 def atualizar_publicacao(publicacao_id: int, publicacao: PublicacaoSchema):
     df = ler_csv()
@@ -94,10 +101,3 @@ def deletar_publicacao(publicacao_id: int):
     df.to_csv(sv_file, index=False)
 
     return {"mensagem": f"Publicação {publicacao_id} deletada com sucesso<3"}
-
-
-@router.get('/quantidade_de_publicacoes', status_code=status.HTTP_200_OK)
-def quantidade_publicacoes():
-    df = ler_csv()
-    quantidade = len(df)
-    return {"quantidade": quantidade}
