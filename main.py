@@ -1,6 +1,6 @@
 from http import HTTPStatus
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 
 from routers.hash import router as hash_router
 from routers.publicacoes import router as publicacoes_router
