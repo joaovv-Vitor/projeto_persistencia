@@ -1,6 +1,7 @@
+import csv
 import os
+from typing import List
 
-from auxiliares import carregar_publicacoes_csv, salvar_publicacoes_csv
 from fastapi import APIRouter, HTTPException
 from starlette import status
 
@@ -77,7 +78,6 @@ def atualizar_publicacao(publicacao_id: int, publicacao: PublicacaoSchema):
 
 
 @router.delete('/deletar_publicacao/{publicacao_id}', status_code=200)
-@router.delete('/deletar_publicacao/{publicacao_id}', status_code=200)
 def deletar_publicacao(publicacao_id: int):
     publicacoes = carregar_publicacoes_csv()
 
@@ -92,3 +92,23 @@ def deletar_publicacao(publicacao_id: int):
     salvar_publicacoes_csv(publicacoes_filtradas)
 
     return {'mensagem': f'Publicação {publicacao_id} deletada com sucesso!'}
+
+
+def carregar_publicacoes_csv() -> List[dict]:
+    if os.path.exists(sv_file) and os.path.getsize(sv_file) > 0:
+        with open(sv_file, mode='r', encoding='utf-8') as file:
+            pubs_dic = csv.DictReader(file)
+            return list(pubs_dic)
+    raise FileNotFoundError()
+
+
+# Salvar publicações de uma lista de volta no CSV
+def salvar_publicacoes_csv(publicacoes: List[dict]):
+    if not publicacoes:
+        raise ValueError("Lista de publicações está vazia.")
+
+    with open(sv_file, mode='w', newline='', encoding='utf-8') as file:
+        colunas = publicacoes[0].keys()
+        writer = csv.DictWriter(file, fieldnames=colunas)
+        writer.writeheader()
+        writer.writerows(publicacoes)

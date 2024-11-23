@@ -1,10 +1,10 @@
 from http import HTTPStatus
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 
+from routers.compactacao import router as compac_router
 from routers.hash import router as hash_router
 from routers.publicacoes import router as publicacoes_router
-from routers.compactacao import router as compac_router
 
 app = FastAPI()
 app.include_router(publicacoes_router)
