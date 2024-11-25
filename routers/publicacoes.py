@@ -99,10 +99,9 @@ def carregar_publicacoes_csv() -> List[dict]:
         with open(sv_file, mode='r', encoding='utf-8') as file:
             pubs_dic = csv.DictReader(file)
             return list(pubs_dic)
-    raise FileNotFoundError()
+    raise HTTPException(status_code=400, detail='empty or does not exist')
 
 
-# Salvar publicações de uma lista de volta no CSV
 def salvar_publicacoes_csv(publicacoes: List[dict]):
     if not publicacoes:
         raise ValueError("Lista de publicações está vazia.")
